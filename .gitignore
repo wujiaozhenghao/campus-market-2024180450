@@ -55,4 +55,5 @@ __screenshots__/
 
 # Temporary files
 *.tmp
-*.temp*.lnk
+*.temp
+*.lnk
