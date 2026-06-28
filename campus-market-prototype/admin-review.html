@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 信息审核</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+</head>
+<body>
+  <div id="app">
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div style="padding:0 24px 24px;border-bottom:1px solid #e5e6eb;margin-bottom:16px;">
+          <h2 style="font-size:18px;font-weight:700;color:#2d8cf0;">校园轻集市</h2>
+          <p style="font-size:12px;color:#86909c;">管理后台</p>
+        </div>
+        <el-menu default-active="2">
+          <el-menu-item index="1" @click="goDashboard"><el-icon><DataBoard /></el-icon>数据概览</el-menu-item>
+          <el-menu-item index="2" @click="goReview"><el-icon><Finished /></el-icon>信息审核</el-menu-item>
+          <el-menu-item index="3"><el-icon><User /></el-icon>用户管理</el-menu-item>
+          <el-menu-item index="4"><el-icon><Setting /></el-icon>系统设置</el-menu-item>
+          <el-menu-item index="5" @click="goHome"><el-icon><HomeFilled /></el-icon>返回前台</el-menu-item>
+        </el-menu>
+      </aside>
+      <main class="admin-main">
+        <div class="admin-header">
+          <h2 style="font-size:20px;font-weight:700;">信息审核</h2>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:13px;color:#86909c;">管理员</span>
+            <el-avatar :size="32" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"></el-avatar>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
+          <el-input v-model="search" placeholder="搜索信息标题..." prefix-icon="Search" style="width:260px;" clearable></el-input>
+          <el-select v-model="catFilter" placeholder="分类" style="width:130px;">
+            <el-option label="全部分类" value="all"></el-option>
+            <el-option label="二手交易" value="trade"></el-option>
+            <el-option label="失物招领" value="lost"></el-option>
+            <el-option label="拼单搭子" value="group"></el-option>
+            <el-option label="跑腿委托" value="task"></el-option>
+          </el-select>
+          <el-select v-model="statusFilter" placeholder="状态" style="width:130px;">
+            <el-option label="全部状态" value="all"></el-option>
+            <el-option label="待审核" value="pending"></el-option>
+            <el-option label="已通过" value="approved"></el-option>
+            <el-option label="已驳回" value="rejected"></el-option>
+          </el-select>
+          <el-button type="primary">搜索</el-button>
+          <el-button>重置</el-button>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+          <el-table :data="items" style="width:100%" size="small">
+            <el-table-column type="index" label="#" width="50"></el-table-column>
+            <el-table-column prop="title" label="信息标题" min-width="200">
+              <template #default="{row}"><a href="#" style="color:#2d8cf0;cursor:pointer;">{{ row.title }}</a></template>
+            </el-table-column>
+            <el-table-column prop="type" label="类型" width="100"></el-table-column>
+            <el-table-column prop="user" label="发布者" width="100"></el-table-column>
+            <el-table-column prop="time" label="发布时间" width="140"></el-table-column>
+            <el-table-column prop="status" label="状态" width="100">
+              <template #default="{row}">
+                <el-tag :type="row.status === '已通过' ? 'success' : row.status === '已驳回' ? 'danger' : 'warning'" size="small">{{ row.status }}</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="200" fixed="right">
+              <template #default="{row}">
+                <el-button type="primary" size="small" v-if="row.status === '待审核'" @click="handlePass">通过</el-button>
+                <el-button type="danger" size="small" v-if="row.status === '待审核'" @click="handleReject">驳回</el-button>
+                <el-button text size="small">查看</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="display:flex;justify-content:center;margin-top:20px;">
+            <el-pagination background layout="prev, pager, next" :total="50" :page-size="10"></el-pagination>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const search = ref(''); const catFilter = ref('all'); const statusFilter = ref('all')
+        const items = ref([
+          { title: '出闲置教材《软件工程导论》，九成新', type: '二手交易', user: '张三', time: '2026-06-28 10:30', status: '待审核' },
+          { title: '东区食堂三楼拼奶茶，还差 2 人', type: '拼单搭子', user: '李四', time: '2026-06-28 10:00', status: '已通过' },
+          { title: '拾到校园卡一张，请失主联系', type: '失物招领', user: '赵六', time: '2026-06-28 09:20', status: '待审核' },
+          { title: '求帮取快递到 6 栋宿舍，酬谢 5 元', type: '跑腿委托', user: '王五', time: '2026-06-28 08:45', status: '已通过' },
+          { title: '出二手显示器戴尔24寸', type: '二手交易', user: '李四', time: '2026-06-28 08:00', status: '待审核' },
+          { title: '拼奶茶，东区食堂三楼', type: '拼单搭子', user: '张三', time: '2026-06-27 18:30', status: '已驳回' },
+          { title: '西门打印店附近丢失黑色耳机盒', type: '失物招领', user: '陈七', time: '2026-06-27 16:00', status: '已通过' },
+          { title: '出英语六级真题含听力光盘', type: '二手交易', user: '刘一', time: '2026-06-27 14:20', status: '待审核' },
+          { title: '帮取快递到 12 栋，酬谢 4 元', type: '跑腿委托', user: '杨四', time: '2026-06-27 12:00', status: '已通过' },
+          { title: '周末一起去动物园，团购门票更优惠', type: '拼单搭子', user: '黄二', time: '2026-06-27 10:30', status: '待审核' },
+        ])
+        const handlePass = () => { ElMessage.success('已通过') }
+        const handleReject = () => { ElMessage.warning('已驳回') }
+        const goDashboard = () => { window.location.href = 'admin-dashboard.html' }
+        const goReview = () => { window.location.href = 'admin-review.html' }
+        const goHome = () => { window.location.href = 'home.html' }
+        return { search, catFilter, statusFilter, items, handlePass, handleReject, goDashboard, goReview, goHome }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

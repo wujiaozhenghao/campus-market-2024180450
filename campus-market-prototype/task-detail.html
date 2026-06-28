@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 跑腿委托详情</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .gallery-main { width:100%; height:420px; border-radius:12px; overflow:hidden; }
+    .gallery-main img { width:100%; height:100%; object-fit:cover; }
+    .side-card { padding:24px; border-radius:12px; background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+    .side-card+.side-card { margin-top:16px; }
+    .detail-title { font-size:22px; font-weight:700; margin:16px 0 12px; }
+    .detail-meta { display:flex; gap:24px; font-size:13px; color:#86909c; margin-bottom:16px; flex-wrap:wrap; }
+    .detail-desc { font-size:15px; line-height:1.8; color:#4e5969; }
+    .reward-amount { font-size:32px; font-weight:700; color:#f53f3f; }
+    .recommend-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .recommend-card { cursor:pointer; }
+    .recommend-card img { width:100%; height:120px; object-fit:cover; border-radius:8px; }
+    .recommend-card h4 { font-size:13px; font-weight:600; margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <div class="category-nav">
+      <div class="container">
+        <a href="home.html">综合</a><a href="home.html?cat=trade">二手交易</a><a href="home.html?cat=lost">失物招领</a>
+        <a href="home.html?cat=group">拼单搭子</a><a href="home.html?cat=task" class="active">跑腿委托</a>
+      </div>
+    </div>
+    <main class="page-main">
+      <div class="container">
+        <el-breadcrumb style="margin-bottom:20px;">
+          <el-breadcrumb-item><a href="home.html">首页</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a href="category.html">跑腿委托</a></el-breadcrumb-item>
+          <el-breadcrumb-item>详情</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="detail-layout">
+          <div>
+            <div class="gallery-main">
+              <img src="https://images.unsplash.com/photo-1603400521630-9f2de124b33b?w=800&h=500&fit=crop" alt="跑腿图片">
+            </div>
+            <div style="margin-top:20px;">
+              <span style="display:inline-block;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:600;background:#e8f8f0;color:#00b578;">🏃 跑腿委托</span>
+              <span style="display:inline-block;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:600;background:#fff3e8;color:#ff9a2e;margin-left:8px;">待接单</span>
+            </div>
+            <div class="detail-title">求帮取快递到 6 栋宿舍，酬谢 5 元</div>
+            <div class="detail-meta">
+              <span>📍 校本部 · 菜鸟驿站 → 6 栋宿舍</span>
+              <span>🕐 1 小时前发布</span>
+              <span>👁 浏览 38 次</span>
+            </div>
+            <div class="reward-amount">¥5</div>
+            <div style="margin:16px 0;font-size:13px;color:#86909c;">期望完成时间：今天 18:00 前</div>
+            <div class="detail-desc">
+              <p>今天下午有课没空去取快递，求好心人帮忙取一下～</p>
+              <p>快递信息：中通快递，取件码 6-3-28，在菜鸟驿站。</p>
+              <p>送到 6 栋宿舍楼下就行，到了喊我一声我下楼拿。酬谢 5 元，微信或支付宝都行。</p>
+              <p>快递不大，一个小盒子，一个人完全拿得了。</p>
+            </div>
+            <el-divider></el-divider>
+            <el-button type="success" size="large" style="width:200px;" @click="goChat">🙋 接单</el-button>
+            <el-button size="large" style="margin-left:12px;">💬 联系发布者</el-button>
+            <el-button text size="small" style="margin-left:12px;color:#86909c;">举报</el-button>
+            <el-divider></el-divider>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">其他跑腿委托</h3>
+            <div class="recommend-grid">
+              <div class="recommend-card" @click="goTaskDetail">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&h=200&fit=crop" alt="">
+                <h4>求带饭到图书馆，酬谢 3 元</h4>
+              </div>
+              <div class="recommend-card" @click="goTaskDetail">
+                <img src="https://images.unsplash.com/photo-1596208125591-5e8c0c7bc108?w=300&h=200&fit=crop" alt="">
+                <h4>帮取快递到 12 栋，酬谢 4 元</h4>
+              </div>
+              <div class="recommend-card" @click="goTaskDetail">
+                <img src="https://images.unsplash.com/photo-1603400521630-9f2de124b33b?w=300&h=200&fit=crop" alt="">
+                <h4>代打印资料送到 3 教，酬谢 3 元</h4>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="side-card">
+              <div style="display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid #e5e6eb;margin-bottom:16px;">
+                <el-avatar :size="48" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"></el-avatar>
+                <div>
+                  <h4 style="font-size:15px;font-weight:600;">王五</h4>
+                  <p style="font-size:13px;color:#86909c;">校本部 · 计算机学院</p>
+                </div>
+              </div>
+              <el-button type="primary" style="width:100%;margin-bottom:8px;" @click="goChat">🙋 接单联系</el-button>
+              <div style="margin-top:16px;font-size:13px;color:#86909c;">
+                <div>已发布 6 条委托</div>
+                <div>完成率 100%</div>
+                <div>注册时间：2026年2月</div>
+              </div>
+            </div>
+            <div class="side-card">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">任务详情</h4>
+              <div style="font-size:13px;color:#4e5969;line-height:2;">
+                <div>类型：代取快递</div>
+                <div>报酬：¥5</div>
+                <div>取件地点：校本部菜鸟驿站</div>
+                <div>送达地点：6 栋宿舍楼下</div>
+                <div>期望完成时间：今天 18:00 前</div>
+                <div>状态：<span style="color:#ff9a2e;font-weight:600;">待接单</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goChat = () => { window.location.href = 'chat.html' }
+        const goTaskDetail = () => { window.location.href = 'task-detail.html' }
+        return { keyword, goPublish, goChat, goTaskDetail }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 发布失物招领</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .form-section { background:#fff; border-radius:12px; padding:32px; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+    .tip-card { background:#f5f7fa; border-radius:12px; padding:24px; }
+    .tip-card h4 { font-size:15px; font-weight:600; margin-bottom:12px; }
+    .tip-card li { font-size:13px; color:#4e5969; line-height:1.8; padding-left:12px; position:relative; }
+    .tip-card li::before { content:'•'; position:absolute; left:0; color:#2d8cf0; }
+    .upload-area { border:2px dashed #e5e6eb; border-radius:8px; padding:40px; text-align:center; cursor:pointer; transition:border-color 0.2s; background:#fafafa; }
+    .upload-area:hover { border-color:#2d8cf0; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <div class="category-nav">
+      <div class="container">
+        <el-breadcrumb>
+          <el-breadcrumb-item><a href="publish.html">发布信息</a></el-breadcrumb-item>
+          <el-breadcrumb-item>发布失物招领</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+    </div>
+    <main class="page-main">
+      <div class="container">
+        <div class="form-layout">
+          <div class="form-section">
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:24px;">发布失物招领</h2>
+            <el-steps :active="1" simple style="margin-bottom:32px;">
+              <el-step title="填写信息" icon="Edit"></el-step>
+              <el-step title="确认发布" icon="Select"></el-step>
+              <el-step title="发布成功" icon="Check"></el-step>
+            </el-steps>
+            <el-form label-position="top">
+              <el-form-item label="类型">
+                <el-radio-group v-model="lostType">
+                  <el-radio value="lost">我丢失了物品</el-radio>
+                  <el-radio value="found">我拾到了物品</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="物品名称">
+                <el-input placeholder="例：校园卡 / 黑色耳机盒 / 钥匙串" size="large"></el-input>
+              </el-form-item>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="发生地点">
+                    <el-select style="width:100%;" placeholder="选择校区" size="large">
+                      <el-option label="校本部" value="main"></el-option>
+                      <el-option label="东校区" value="east"></el-option>
+                      <el-option label="西校区" value="west"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="发生时间">
+                    <el-date-picker style="width:100%;" type="date" placeholder="选择日期" size="large"></el-date-picker>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-form-item label="联系方式">
+                <el-input placeholder="手机号或微信" size="large"></el-input>
+              </el-form-item>
+              <el-form-item label="物品图片">
+                <div class="upload-area">
+                  <el-icon style="font-size:48px;color:#86909c;"><Plus /></el-icon>
+                  <p style="color:#86909c;margin-top:8px;">点击或拖拽上传图片（最多 3 张）</p>
+                  <p style="font-size:12px;color:#c9cdd4;">建议上传物品照片，方便识别</p>
+                </div>
+              </el-form-item>
+              <el-form-item label="物品特征描述">
+                <el-input type="textarea" :rows="5" placeholder="请详细描述物品的外观、颜色、品牌、特殊标记等特征，帮助对方确认"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-checkbox>我已阅读并同意 <a href="#" style="color:#2d8cf0;">《发布须知》</a></el-checkbox>
+              </el-form-item>
+              <div style="display:flex;gap:12px;">
+                <el-button type="primary" size="large" style="width:160px;">提交发布</el-button>
+                <el-button size="large">保存草稿</el-button>
+              </div>
+            </el-form>
+          </div>
+          <div>
+            <div class="tip-card">
+              <h4>💡 发布提示</h4>
+              <ul style="list-style:none;padding:0;">
+                <li>失物信息请尽量详细描述物品特征</li>
+                <li>拾物信息建议隐去隐私信息（如学号全号）</li>
+                <li>认领时请核实对方身份</li>
+                <li>建议上传物品照片帮助识别</li>
+                <li>认领成功后请及时关闭信息</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const lostType = ref('lost')
+        return { keyword, lostType }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

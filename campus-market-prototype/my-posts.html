@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 我的发布</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .post-item { display:flex; gap:16px; padding:20px; border-bottom:1px solid #f2f3f5; cursor:pointer; transition:background 0.2s; }
+    .post-item:hover { background:#f5f7fa; }
+    .post-item:last-child { border-bottom:none; }
+    .post-item img { width:100px; height:75px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+    .post-item .info { flex:1; min-width:0; }
+    .post-item .info h4 { font-size:15px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .post-item .info .meta { font-size:12px; color:#86909c; margin-top:4px; display:flex; gap:12px; }
+    .post-item .actions { display:flex; flex-direction:column; gap:8px; justify-content:center; }
+    .post-stats { display:flex; gap:16px; margin-top:8px; font-size:12px; color:#86909c; }
+    .filter-tabs { display:flex; gap:8px; padding:16px 20px; border-bottom:1px solid #e5e6eb; }
+    .filter-tab { padding:4px 16px; border-radius:16px; font-size:13px; cursor:pointer; transition:all 0.2s; }
+    .filter-tab.active { background:#2d8cf0; color:#fff; }
+    .filter-tab:not(.active) { background:#f2f3f5; color:#4e5969; }
+    .filter-tab:not(.active):hover { background:#e8f3ff; color:#2d8cf0; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <main class="page-main">
+      <div class="container" style="max-width:900px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <h1 style="font-size:24px;font-weight:700;">我的发布</h1>
+          <el-button type="primary" @click="goPublish">+ 发布新信息</el-button>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;">
+          <div class="filter-tabs">
+            <span class="filter-tab active">全部（12）</span>
+            <span class="filter-tab">进行中（8）</span>
+            <span class="filter-tab">已完成（3）</span>
+            <span class="filter-tab">草稿（1）</span>
+          </div>
+
+          <div v-for="(post, idx) in posts" :key="idx" class="post-item" @click="goDetail(post)">
+            <img :src="post.img" :alt="post.title">
+            <div class="info">
+              <h4>{{ post.title }}</h4>
+              <div class="meta">
+                <span>{{ post.type }}</span>
+                <span>🕐 {{ post.time }}</span>
+                <span>👁 {{ post.views }} 次浏览</span>
+              </div>
+              <div class="post-stats">
+                <span>💬 {{ post.chats }} 条咨询</span>
+                <span>❤️ {{ post.favs }} 人收藏</span>
+              </div>
+            </div>
+            <div class="actions">
+              <el-tag :type="post.statusType" size="small">{{ post.status }}</el-tag>
+              <el-button text size="small">编辑</el-button>
+              <el-button text size="small" type="danger" v-if="post.canDel">删除</el-button>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:center;padding:24px;">
+            <el-pagination background layout="prev, pager, next" :total="12" :page-size="10"></el-pagination>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref, reactive } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const posts = reactive([
+          { title: '出闲置教材《软件工程导论》，九成新', img: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=300&h=200&fit=crop', type: '📱 二手交易', time: '10 分钟前', views: 128, chats: 3, favs: 5, status: '进行中', statusType: 'warning', canDel: true },
+          { title: '拾到校园卡一张，请失主联系', img: 'https://images.unsplash.com/photo-1586282391129-76a6df230234?w=300&h=200&fit=crop', type: '🔍 失物招领', time: '2 小时前', views: 56, chats: 1, favs: 2, status: '待认领', statusType: 'danger', canDel: true },
+          { title: '东区食堂三楼拼奶茶，还差 2 人', img: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=300&h=200&fit=crop', type: '🧑‍🤝‍🧑 拼单搭子', time: '昨天', views: 42, chats: 5, favs: 3, status: '进行中', statusType: 'warning', canDel: true },
+          { title: '求帮取快递到 6 栋宿舍，酬谢 5 元', img: 'https://images.unsplash.com/photo-1603400521630-9f2de124b33b?w=300&h=200&fit=crop', type: '🏃 跑腿委托', time: '昨天', views: 38, chats: 2, favs: 1, status: '已完成', statusType: 'success', canDel: false },
+          { title: '出二手显示器戴尔24寸', img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=300&h=200&fit=crop', type: '📱 二手交易', time: '3 天前', views: 89, chats: 6, favs: 8, status: '已完成', statusType: 'success', canDel: false },
+        ])
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goDetail = (post) => { window.location.href = post.type.includes('二手') ? 'item-detail.html' : post.type.includes('失物') ? 'lost-detail.html' : post.type.includes('拼单') ? 'group-detail.html' : 'task-detail.html' }
+        return { keyword, posts, goPublish, goDetail }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

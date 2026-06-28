@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 分类浏览</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .cat-hero { padding: 48px 0 32px; }
+    .cat-hero h1 { font-size: 28px; font-weight: 700; }
+    .cat-hero p { color: #86909c; margin-top: 4px; }
+    .cat-tab-card { padding: 20px; border-radius: 12px; border: 1px solid #e5e6eb; cursor: pointer; transition: all 0.2s; text-align: center; background: #fff; }
+    .cat-tab-card:hover, .cat-tab-card.active { border-color: #2d8cf0; background: #e8f3ff; }
+    .cat-tab-card .icon { font-size: 28px; margin-bottom: 8px; }
+    .cat-tab-card .name { font-weight: 600; font-size: 15px; }
+    .cat-tab-card .count { font-size: 12px; color: #86909c; margin-top: 4px; }
+    .item-card { overflow: hidden; }
+    .item-card .img-wrap { height: 160px; overflow: hidden; }
+    .item-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .item-card:hover .img-wrap img { transform: scale(1.05); }
+    .item-card .card-body { padding: 14px; }
+    .item-card .card-body h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .item-card .price { color: #f53f3f; font-weight: 700; font-size: 16px; }
+    .item-card .meta { font-size: 12px; color: #86909c; display: flex; justify-content: space-between; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search">
+          <el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input>
+        </div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="cat-hero">
+      <div class="container">
+        <h1>分类浏览</h1>
+        <p>按类别快速找到你需要的校园信息</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- 分类卡片 -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px;">
+        <div class="cat-tab-card" :class="{ active: activeCat === 'trade' }" @click="activeCat='trade'">
+          <div class="icon">📱</div>
+          <div class="name">二手交易</div>
+          <div class="count">今日更新 23 条</div>
+        </div>
+        <div class="cat-tab-card" :class="{ active: activeCat === 'lost' }" @click="activeCat='lost'">
+          <div class="icon">🔍</div>
+          <div class="name">失物招领</div>
+          <div class="count">今日更新 8 条</div>
+        </div>
+        <div class="cat-tab-card" :class="{ active: activeCat === 'group' }" @click="activeCat='group'">
+          <div class="icon">🧑‍🤝‍🧑</div>
+          <div class="name">拼单搭子</div>
+          <div class="count">今日更新 15 条</div>
+        </div>
+        <div class="cat-tab-card" :class="{ active: activeCat === 'task' }" @click="activeCat='task'">
+          <div class="icon">🏃</div>
+          <div class="name">跑腿委托</div>
+          <div class="count">今日更新 12 条</div>
+        </div>
+      </div>
+
+      <!-- 筛选 -->
+      <div style="display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:13px; color:#86909c;">地点：</span>
+        <el-select v-model="location" placeholder="全部校区" size="small" style="width:130px;">
+          <el-option label="全部校区" value="all"></el-option>
+          <el-option label="校本部" value="main"></el-option>
+          <el-option label="东校区" value="east"></el-option>
+          <el-option label="西校区" value="west"></el-option>
+        </el-select>
+        <span style="font-size:13px; color:#86909c; margin-left:12px;">排序：</span>
+        <el-select v-model="sort" size="small" style="width:130px;">
+          <el-option label="最新发布" value="newest"></el-option>
+          <el-option label="价格最低" value="price"></el-option>
+          <el-option label="离我最近" value="distance"></el-option>
+        </el-select>
+      </div>
+
+      <!-- 列表 -->
+      <div class="card-grid">
+        <el-card v-for="(item, idx) in items" :key="idx" shadow="hover" class="item-card" @click="goDetail">
+          <div class="img-wrap"><img :src="item.img" :alt="item.title"></div>
+          <div class="card-body">
+            <h3>{{ item.title }}</h3>
+            <div style="margin:4px 0;">
+              <el-tag size="small" v-if="item.tag">{{ item.tag }}</el-tag>
+              <el-tag size="small" v-if="item.condition" effect="plain" style="margin-left:4px;">{{ item.condition }}</el-tag>
+            </div>
+            <div class="price" v-if="item.price">¥{{ item.price }}</div>
+            <div v-else style="color:#00b578;font-weight:600;font-size:14px;">{{ item.reward }}</div>
+            <div class="meta"><span>{{ item.user }}</span><span>{{ item.location }} · {{ item.time }}</span></div>
+          </div>
+        </el-card>
+      </div>
+
+      <div style="display:flex; justify-content:center; margin:40px 0;">
+        <el-pagination background layout="prev, pager, next" :total="80" :page-size="12"></el-pagination>
+      </div>
+    </div>
+
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+
+  <script>
+    const { createApp, ref, reactive } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const activeCat = ref('trade')
+        const location = ref('all')
+        const sort = ref('newest')
+
+        const items = reactive([
+          { title: '出闲置教材《软件工程导论》，九成新', img: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&h=300&fit=crop', tag: '二手交易', price: 25, user: '张三', location: '校本部', time: '10分钟前', condition: '九成新' },
+          { title: '出二手显示器戴尔24寸，用了半年', img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=300&fit=crop', tag: '二手交易', price: 380, user: '李四', location: '东校区', time: '2小时前', condition: '八成新' },
+          { title: '出英语六级真题含听力光盘', img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop', tag: '二手交易', price: 15, user: '王五', location: '西校区', time: '5小时前', condition: '九成新' },
+          { title: '出吉他入门款，买来没用几次', img: 'https://images.unsplash.com/photo-1516924962500-2b4b3b99ea0c?w=400&h=300&fit=crop', tag: '二手交易', price: 120, user: '赵六', location: '校本部', time: '1天前', condition: '七成新' },
+          { title: '出考研数学复习全书全套', img: 'https://images.unsplash.com/photo-1594575111057-47b35c5f98f7?w=400&h=300&fit=crop', tag: '二手交易', price: 40, user: '陈七', location: '东校区', time: '1天前', condition: '八成新' },
+          { title: '出自行车，永久牌，好骑', img: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=400&h=300&fit=crop', tag: '二手交易', price: 150, user: '周八', location: '校本部', time: '2天前', condition: '七成新' },
+        ])
+
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goDetail = () => { window.location.href = 'item-detail.html' }
+
+        return { keyword, activeCat, location, sort, items, goPublish, goDetail }
+      }
+    })
+    app.use(ElementPlus)
+    app.mount('#app')
+  </script>
+</body>
+</html>

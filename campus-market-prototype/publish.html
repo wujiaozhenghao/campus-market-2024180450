@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 发布信息</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .publish-option { padding:32px 24px; border-radius:12px; border:2px solid #e5e6eb; cursor:pointer; transition:all 0.2s; text-align:center; background:#fff; }
+    .publish-option:hover { border-color:#2d8cf0; background:#e8f3ff; transform:translateY(-2px); box-shadow:0 4px 20px rgba(45,140,240,0.1); }
+    .publish-option .icon { font-size:48px; margin-bottom:12px; }
+    .publish-option .name { font-size:18px; font-weight:600; }
+    .publish-option .desc { font-size:13px; color:#86909c; margin-top:6px; }
+    .publish-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+    @media (max-width:1024px) { .publish-grid { grid-template-columns:repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default">发布信息</el-button>
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <main class="page-main">
+      <div class="container" style="max-width:1000px;">
+        <div style="text-align:center; margin-bottom:48px;">
+          <h1 style="font-size:28px;font-weight:700;">发布信息</h1>
+          <p style="color:#86909c;margin-top:8px;">选择你要发布的类型，校园信息真实可信</p>
+        </div>
+        <div class="publish-grid">
+          <a href="publish-item.html" class="publish-option">
+            <div class="icon">📱</div>
+            <div class="name">二手交易</div>
+            <div class="desc">出售闲置教材、数码、生活用品等</div>
+          </a>
+          <a href="publish-lost.html" class="publish-option">
+            <div class="icon">🔍</div>
+            <div class="name">失物招领</div>
+            <div class="desc">发布丢失物品或拾到物品信息</div>
+          </a>
+          <a href="publish-group.html" class="publish-option">
+            <div class="icon">🧑‍🤝‍🧑</div>
+            <div class="name">拼单搭子</div>
+            <div class="desc">找人一起拼奶茶、拼车、团购</div>
+          </a>
+          <a href="publish-task.html" class="publish-option">
+            <div class="icon">🏃</div>
+            <div class="name">跑腿委托</div>
+            <div class="desc">发布代取快递、带饭等跑腿任务</div>
+          </a>
+        </div>
+        <div style="margin-top:48px;padding:24px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">📋 发布须知</h3>
+          <ul style="font-size:14px;color:#4e5969;line-height:2;padding-left:20px;">
+            <li>发布信息请确保真实有效，虚假信息将被删除</li>
+            <li>请如实描述商品成色、失物特征、拼单条件等关键信息</li>
+            <li>禁止发布违规商品（烟酒、违规电器等）</li>
+            <li>交易过程中注意人身和财产安全，建议在校园公共区域交易</li>
+            <li>发布后可在「个人中心 - 我的发布」中查看和管理</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        return { keyword }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

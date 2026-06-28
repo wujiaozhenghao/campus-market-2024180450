@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 登录</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .auth-page { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#e8f3ff 0%,#f0f9ff 100%); padding:24px; }
+    .auth-card { background:#fff; border-radius:16px; padding:40px; width:420px; max-width:100%; box-shadow:0 8px 40px rgba(0,0,0,0.08); }
+    .auth-card h1 { font-size:24px; font-weight:700; text-align:center; margin-bottom:8px; }
+    .auth-card .sub { text-align:center; color:#86909c; margin-bottom:32px; font-size:14px; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="auth-page">
+      <div class="auth-card">
+        <h1>校园轻集市</h1>
+        <p class="sub">登录账号，开启校园集市</p>
+        <el-form label-position="top">
+          <el-form-item label="学号 / 手机号">
+            <el-input v-model="account" placeholder="请输入学号或手机号" size="large"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input v-model="password" type="password" placeholder="请输入密码" size="large" show-password></el-input>
+          </el-form-item>
+          <div style="display:flex;justify-content:space-between;margin-bottom:24px;">
+            <el-checkbox v-model="remember">记住登录</el-checkbox>
+            <a href="#" style="color:#2d8cf0;font-size:13px;">忘记密码？</a>
+          </div>
+          <el-button type="primary" size="large" style="width:100%;" @click="doLogin">登 录</el-button>
+        </el-form>
+        <div style="text-align:center;margin-top:20px;font-size:14px;color:#86909c;">
+          还没有账号？<a href="register.html" style="color:#2d8cf0;">立即注册</a>
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+          <a href="home.html" style="font-size:13px;color:#86909c;">先逛逛 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const account = ref(''); const password = ref(''); const remember = ref(false)
+        const doLogin = () => { window.location.href = 'home.html' }
+        return { account, password, remember, doLogin }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

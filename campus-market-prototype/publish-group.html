@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 发布拼单搭子</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .form-section { background:#fff; border-radius:12px; padding:32px; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+    .tip-card { background:#f5f7fa; border-radius:12px; padding:24px; }
+    .tip-card h4 { font-size:15px; font-weight:600; margin-bottom:12px; }
+    .tip-card li { font-size:13px; color:#4e5969; line-height:1.8; padding-left:12px; position:relative; }
+    .tip-card li::before { content:'•'; position:absolute; left:0; color:#ff9a2e; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <div class="category-nav">
+      <div class="container">
+        <el-breadcrumb>
+          <el-breadcrumb-item><a href="publish.html">发布信息</a></el-breadcrumb-item>
+          <el-breadcrumb-item>发布拼单搭子</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+    </div>
+    <main class="page-main">
+      <div class="container">
+        <div class="form-layout">
+          <div class="form-section">
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:24px;">发布拼单搭子</h2>
+            <el-steps :active="1" simple style="margin-bottom:32px;">
+              <el-step title="填写信息" icon="Edit"></el-step>
+              <el-step title="确认发布" icon="Select"></el-step>
+              <el-step title="发布成功" icon="Check"></el-step>
+            </el-steps>
+            <el-form label-position="top">
+              <el-form-item label="拼单主题">
+                <el-input placeholder="例：东区食堂三楼拼奶茶，还差 2 人" size="large"></el-input>
+              </el-form-item>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="拼单分类">
+                    <el-select style="width:100%;" placeholder="选择分类" size="large">
+                      <el-option label="餐饮拼单" value="food"></el-option>
+                      <el-option label="拼车出行" value="ride"></el-option>
+                      <el-option label="团购拼单" value="groupbuy"></el-option>
+                      <el-option label="运动娱乐" value="sport"></el-option>
+                      <el-option label="其他" value="other"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="需要人数">
+                    <el-input-number :min="2" :max="20" size="large"></el-input-number>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="人均预算（元）">
+                    <el-input placeholder="例：12" size="large">
+                      <template #prefix>¥</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="集合地点">
+                    <el-select style="width:100%;" placeholder="选择校区" size="large">
+                      <el-option label="校本部" value="main"></el-option>
+                      <el-option label="东校区" value="east"></el-option>
+                      <el-option label="西校区" value="west"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="集合时间">
+                    <el-date-picker style="width:100%;" type="datetime" placeholder="选择日期时间" size="large"></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="截止时间">
+                    <el-date-picker style="width:100%;" type="datetime" placeholder="选择截止时间" size="large"></el-date-picker>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-form-item label="联系方式">
+                <el-input placeholder="手机号或微信" size="large"></el-input>
+              </el-form-item>
+              <el-form-item label="详细说明">
+                <el-input type="textarea" :rows="5" placeholder="描述拼单的具体计划、费用分摊方式、注意事项等"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-checkbox>我已阅读并同意 <a href="#" style="color:#2d8cf0;">《发布须知》</a></el-checkbox>
+              </el-form-item>
+              <div style="display:flex;gap:12px;">
+                <el-button type="warning" size="large" style="width:160px;">提交发布</el-button>
+                <el-button size="large">保存草稿</el-button>
+              </div>
+            </el-form>
+          </div>
+          <div>
+            <div class="tip-card">
+              <h4>💡 发布提示</h4>
+              <ul style="list-style:none;padding:0;">
+                <li>清晰说明拼单内容和费用分摊方式</li>
+                <li>及时更新拼单进度和人数</li>
+                <li>拼单成功后请及时关闭信息</li>
+                <li>建议在校园公共区域集合</li>
+                <li>注意保护个人隐私信息</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        return { keyword }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 原型入口</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .hero {
+      text-align: center;
+      padding: 80px 24px 48px;
+      background: linear-gradient(135deg, #e8f3ff 0%, #f0f9ff 100%);
+      margin-top: 64px;
+    }
+    .hero h1 { font-size: 40px; font-weight: 800; color: #1d2129; }
+    .hero p { font-size: 16px; color: #4e5969; margin-top: 12px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .section-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-top: 8px; }
+    .page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .page-card { padding: 20px; border-radius: 12px; border: 1px solid #e5e6eb; transition: all 0.2s; background: #fff; }
+    .page-card:hover { border-color: #2d8cf0; box-shadow: 0 4px 20px rgba(45,140,240,0.1); transform: translateY(-2px); }
+    .page-card .label { font-size: 12px; color: #86909c; display: block; margin-top: 4px; }
+    .group-label { font-size: 13px; font-weight: 600; color: #4e5969; margin-bottom: 12px; margin-top: 24px; padding-left: 8px; border-left: 3px solid #2d8cf0; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 顶部导航 -->
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div style="flex:1"></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <el-button size="default" @click="goLogin">登录</el-button>
+          <el-button size="default" @click="goRegister">注册</el-button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>校园轻集市</h1>
+      <p>轻量、可信、面向校园生活的信息服务平台 — 二手交易 · 失物招领 · 拼单搭子 · 跑腿委托</p>
+      <div style="margin-top:32px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <el-button type="primary" size="large" @click="goHome">浏览信息</el-button>
+        <el-button size="large" @click="goPublish">发布信息</el-button>
+      </div>
+    </div>
+
+    <div class="container" style="padding-bottom:64px;">
+      <!-- 业务页面 -->
+      <div class="group-label">核心业务</div>
+      <div class="page-grid">
+        <a href="home.html" class="page-card"><strong>🏠 首页 / 信息流</strong><span class="label">综合信息流，支持搜索与分类筛选</span></a>
+        <a href="category.html" class="page-card"><strong>📂 分类浏览</strong><span class="label">按二手 / 失物 / 拼单 / 跑腿分类浏览</span></a>
+        <a href="item-detail.html" class="page-card"><strong>📦 二手商品详情</strong><span class="label">二手交易商品详情页</span></a>
+        <a href="lost-detail.html" class="page-card"><strong>🔍 失物招领详情</strong><span class="label">失物/拾物详情展示</span></a>
+        <a href="group-detail.html" class="page-card"><strong>👥 拼单搭子详情</strong><span class="label">拼单信息详情</span></a>
+        <a href="task-detail.html" class="page-card"><strong>📋 跑腿委托详情</strong><span class="label">跑腿任务详情页</span></a>
+      </div>
+
+      <div class="group-label">信息发布</div>
+      <div class="page-grid">
+        <a href="publish.html" class="page-card"><strong>✏️ 发布选择</strong><span class="label">选择发布类型</span></a>
+        <a href="publish-item.html" class="page-card"><strong>📱 发布二手</strong><span class="label">发布二手商品表单</span></a>
+        <a href="publish-lost.html" class="page-card"><strong>🔎 发布失物招领</strong><span class="label">发布失物/拾物表单</span></a>
+        <a href="publish-group.html" class="page-card"><strong>🧑‍🤝‍🧑 发布拼单</strong><span class="label">发布拼单搭子表单</span></a>
+        <a href="publish-task.html" class="page-card"><strong>🏃 发布跑腿</strong><span class="label">发布跑腿委托表单</span></a>
+      </div>
+
+      <div class="group-label">消息与个人</div>
+      <div class="page-grid">
+        <a href="messages.html" class="page-card"><strong>💬 消息列表</strong><span class="label">会话消息列表</span></a>
+        <a href="chat.html" class="page-card"><strong>💭 聊天详情</strong><span class="label">聊天对话界面</span></a>
+        <a href="profile.html" class="page-card"><strong>👤 个人中心</strong><span class="label">用户主页</span></a>
+        <a href="my-posts.html" class="page-card"><strong>📄 我的发布</strong><span class="label">管理已发布信息</span></a>
+        <a href="favorites.html" class="page-card"><strong>❤️ 我的收藏</strong><span class="label">收藏列表</span></a>
+        <a href="settings.html" class="page-card"><strong>⚙️ 账号设置</strong><span class="label">修改个人资料与密码</span></a>
+      </div>
+
+      <div class="group-label">账户</div>
+      <div class="page-grid">
+        <a href="login.html" class="page-card"><strong>🔑 登录</strong><span class="label">用户登录</span></a>
+        <a href="register.html" class="page-card"><strong>📝 注册</strong><span class="label">新用户注册</span></a>
+      </div>
+
+      <div class="group-label">管理端</div>
+      <div class="page-grid">
+        <a href="admin-dashboard.html" class="page-card"><strong>📊 管理首页</strong><span class="label">数据概览与快捷操作</span></a>
+        <a href="admin-review.html" class="page-card"><strong>✅ 信息审核</strong><span class="label">内容审核管理</span></a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>校园轻集市 · 高保真原型 · 仅供教学演示</p>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue
+    const app = createApp({
+      methods: {
+        goHome() { window.location.href = 'home.html' },
+        goPublish() { window.location.href = 'publish.html' },
+        goLogin() { window.location.href = 'login.html' },
+        goRegister() { window.location.href = 'register.html' }
+      }
+    })
+    app.use(ElementPlus)
+    app.mount('#app')
+  </script>
+</body>
+</html>

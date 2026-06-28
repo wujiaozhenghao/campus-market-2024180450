@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 消息列表</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .chat-item { display:flex; align-items:center; gap:12px; padding:16px; cursor:pointer; transition:background 0.2s; border-bottom:1px solid #f2f3f5; }
+    .chat-item:hover { background:#f5f7fa; }
+    .chat-item .info { flex:1; min-width:0; }
+    .chat-item .info h4 { font-size:14px; font-weight:600; display:flex; align-items:center; gap:8px; }
+    .chat-item .info p { font-size:13px; color:#86909c; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:4px; }
+    .chat-item .right { text-align:right; }
+    .chat-item .right .time { font-size:12px; color:#c9cdd4; }
+    .unread-count { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 6px; border-radius:10px; background:#f53f3f; color:#fff; font-size:12px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索联系人..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <main class="page-main">
+      <div class="container" style="max-width:800px;">
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:24px;">消息</h1>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;">
+          <div class="chat-item" v-for="(chat, idx) in chats" :key="idx" @click="goChat">
+            <el-avatar :size="48" :src="chat.avatar"></el-avatar>
+            <div class="info">
+              <h4>{{ chat.name }} <span v-if="chat.unread" class="unread-count">{{ chat.unread }}</span></h4>
+              <p>{{ chat.lastMsg }}</p>
+            </div>
+            <div class="right">
+              <div class="time">{{ chat.time }}</div>
+            </div>
+          </div>
+          <div v-if="chats.length === 0" class="empty-state">
+            <p>暂无消息</p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref, reactive } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const chats = reactive([
+          { name: '张三（二手交易）', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face', lastMsg: '你好，教材还在吗？我想买', time: '10:32', unread: 2 },
+          { name: '赵六（失物招领）', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face', lastMsg: '好的，我在图书馆二楼，你过来吧', time: '昨天', unread: 1 },
+          { name: '李四（拼单搭子）', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', lastMsg: '还差两个人，你要一起吗？', time: '昨天', unread: 0 },
+          { name: '王五（跑腿委托）', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', lastMsg: '好的，我帮你取，到了喊你', time: '前天', unread: 0 },
+          { name: '系统通知', avatar: 'https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=100&h=100&fit=crop&crop=face', lastMsg: '你的发布「出闲置教材」已被浏览 28 次', time: '前天', unread: 0 },
+        ])
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goChat = () => { window.location.href = 'chat.html' }
+        return { keyword, chats, goPublish, goChat }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

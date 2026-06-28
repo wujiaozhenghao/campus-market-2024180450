@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 聊天</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .chat-container { display:flex; flex-direction:column; height:calc(100vh - 200px); min-height:500px; background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+    .chat-header { padding:16px 24px; border-bottom:1px solid #e5e6eb; display:flex; align-items:center; gap:12px; }
+    .chat-header h3 { font-size:16px; font-weight:600; }
+    .chat-header .rel-card { margin-left:auto; font-size:12px; color:#2d8cf0; background:#e8f3ff; padding:6px 12px; border-radius:6px; cursor:pointer; }
+    .chat-body { flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:16px; }
+    .msg { max-width:70%; padding:12px 16px; border-radius:12px; font-size:14px; line-height:1.5; }
+    .msg-other { background:#f2f3f5; color:#1d2129; align-self:flex-start; border-bottom-left-radius:4px; }
+    .msg-self { background:#2d8cf0; color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+    .msg .time { font-size:11px; opacity:0.7; margin-top:4px; }
+    .msg-self .time { text-align:right; }
+    .chat-footer { padding:16px 24px; border-top:1px solid #e5e6eb; display:flex; gap:12px; align-items:center; }
+    .chat-footer .el-input { flex:1; }
+    .quick-replies { display:flex; gap:8px; padding:12px 24px; border-top:1px solid #f2f3f5; flex-wrap:wrap; }
+    .quick-reply { font-size:12px; padding:4px 12px; border-radius:16px; background:#f2f3f5; color:#4e5969; cursor:pointer; transition:background 0.2s; }
+    .quick-reply:hover { background:#e8f3ff; color:#2d8cf0; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <main class="page-main">
+      <div class="container" style="max-width:800px;">
+        <div class="chat-container">
+          <div class="chat-header">
+            <el-avatar :size="40" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+            <div><h3>张三</h3><p style="font-size:12px;color:#00b578;">● 在线</p></div>
+            <div class="rel-card" @click="goItemDetail">📦 查看关联商品</div>
+          </div>
+
+          <div class="chat-body" ref="chatBody">
+            <div class="msg msg-other">
+              你好，请问那本《软件工程导论》还在吗？
+              <div class="time">10:30</div>
+            </div>
+            <div class="msg msg-self">
+              在的，九成新，25 元
+              <div class="time">10:31</div>
+            </div>
+            <div class="msg msg-other">
+              可以小刀吗？20 行不行
+              <div class="time">10:31</div>
+            </div>
+            <div class="msg msg-self">
+              最低 22 吧，书很新的，基本没怎么翻
+              <div class="time">10:32</div>
+            </div>
+            <div class="msg msg-other">
+              好的，22 成交！什么时候方便交易？
+              <div class="time">10:32</div>
+            </div>
+            <div class="msg msg-other">
+              我在校本部，图书馆附近可以吗？
+              <div class="time">10:33</div>
+            </div>
+            <div class="msg msg-self">
+              可以，今天下午 5 点图书馆门口见？
+              <div class="time">10:34</div>
+            </div>
+            <div class="msg msg-other">
+              好的，到时候联系～
+              <div class="time">10:34</div>
+            </div>
+          </div>
+
+          <div class="quick-replies">
+            <span class="quick-reply">好的</span>
+            <span class="quick-reply">还在的</span>
+            <span class="quick-reply">可以小刀</span>
+            <span class="quick-reply">什么时候方便</span>
+            <span class="quick-reply">我在校本部</span>
+          </div>
+
+          <div class="chat-footer">
+            <el-input v-model="msgInput" placeholder="输入消息..." size="large" @keyup.enter="sendMsg"></el-input>
+            <el-button type="primary" size="large" @click="sendMsg">发送</el-button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref, nextTick } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const msgInput = ref('')
+        const chatBody = ref(null)
+        const sendMsg = () => {
+          if (!msgInput.value.trim()) return
+          msgInput.value = ''
+          nextTick(() => { if (chatBody.value) chatBody.value.scrollTop = chatBody.value.scrollHeight })
+        }
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goItemDetail = () => { window.location.href = 'item-detail.html' }
+        return { keyword, msgInput, chatBody, sendMsg, goPublish, goItemDetail }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

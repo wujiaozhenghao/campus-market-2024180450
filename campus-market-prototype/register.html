@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 注册</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .auth-page { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#e8f3ff 0%,#f0f9ff 100%); padding:24px; }
+    .auth-card { background:#fff; border-radius:16px; padding:40px; width:480px; max-width:100%; box-shadow:0 8px 40px rgba(0,0,0,0.08); }
+    .auth-card h1 { font-size:24px; font-weight:700; text-align:center; margin-bottom:8px; }
+    .auth-card .sub { text-align:center; color:#86909c; margin-bottom:32px; font-size:14px; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="auth-page">
+      <div class="auth-card">
+        <h1>注册账号</h1>
+        <p class="sub">加入校园轻集市，发现校园生活的更多可能</p>
+        <el-form label-position="top">
+          <el-row :gutter="20">
+            <el-col :span="12"><el-form-item label="姓名"><el-input v-model="name" placeholder="真实姓名" size="large"></el-input></el-form-item></el-col>
+            <el-col :span="12"><el-form-item label="学号"><el-input v-model="studentId" placeholder="学号" size="large"></el-input></el-form-item></el-col>
+          </el-row>
+          <el-form-item label="手机号">
+            <el-input v-model="phone" placeholder="手机号" size="large"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input v-model="password" type="password" placeholder="至少 8 位，字母+数字" size="large" show-password></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码">
+            <el-input v-model="confirmPwd" type="password" placeholder="再次输入密码" size="large" show-password></el-input>
+          </el-form-item>
+          <el-form-item label="学院">
+            <el-select v-model="college" placeholder="选择学院" style="width:100%;" size="large">
+              <el-option label="信息学院" value="cs"></el-option>
+              <el-option label="经管学院" value="econ"></el-option>
+              <el-option label="人文学院" value="humanities"></el-option>
+              <el-option label="外国语学院" value="foreign"></el-option>
+              <el-option label="理学院" value="science"></el-option>
+              <el-option label="其他" value="other"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-checkbox v-model="agree">我已阅读并同意 <a href="#" style="color:#2d8cf0;">《用户协议》</a>和<a href="#" style="color:#2d8cf0;">《隐私政策》</a></el-checkbox>
+          </el-form-item>
+          <el-button type="primary" size="large" style="width:100%;" @click="doRegister">注 册</el-button>
+        </el-form>
+        <div style="text-align:center;margin-top:20px;font-size:14px;color:#86909c;">
+          已有账号？<a href="login.html" style="color:#2d8cf0;">立即登录</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const name = ref(''); const studentId = ref(''); const phone = ref('')
+        const password = ref(''); const confirmPwd = ref(''); const college = ref('')
+        const agree = ref(false)
+        const doRegister = () => { window.location.href = 'login.html' }
+        return { name, studentId, phone, password, confirmPwd, college, agree, doRegister }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

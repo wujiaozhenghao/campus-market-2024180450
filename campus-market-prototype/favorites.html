@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 我的收藏</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .fav-item { display:flex; gap:16px; padding:20px; border-bottom:1px solid #f2f3f5; cursor:pointer; transition:background 0.2s; }
+    .fav-item:hover { background:#f5f7fa; }
+    .fav-item:last-child { border-bottom:none; }
+    .fav-item img { width:100px; height:75px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+    .fav-item .info { flex:1; min-width:0; }
+    .fav-item .info h4 { font-size:15px; font-weight:600; margin-bottom:4px; }
+    .fav-item .info .meta { font-size:12px; color:#86909c; display:flex; gap:12px; }
+    .fav-item .info .price { font-size:16px; font-weight:700; color:#f53f3f; margin-top:6px; }
+    .fav-item .action { display:flex; flex-direction:column; gap:8px; justify-content:center; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <main class="page-main">
+      <div class="container" style="max-width:900px;">
+        <h1 style="font-size:24px;font-weight:700;margin-bottom:24px;">我的收藏</h1>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;">
+          <div class="fav-item" v-for="(item, idx) in favorites" :key="idx" @click="goDetail(item)">
+            <img :src="item.img" :alt="item.title">
+            <div class="info">
+              <h4>{{ item.title }}</h4>
+              <div class="meta"><span>{{ item.type }}</span><span>👤 {{ item.user }}</span><span>🕐 {{ item.time }}</span></div>
+              <div class="price" v-if="item.price">¥{{ item.price }}</div>
+              <div v-else style="font-size:14px;font-weight:600;color:#00b578;">{{ item.reward }}</div>
+            </div>
+            <div class="action">
+              <el-button text type="danger" size="small" @click.stop>取消收藏</el-button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:center;padding:24px;">
+            <el-pagination background layout="prev, pager, next" :total="8" :page-size="10"></el-pagination>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref, reactive } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const favorites = reactive([
+          { title: '出闲置教材《软件工程导论》，九成新', img: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=300&h=200&fit=crop', type: '二手交易', user: '张三', time: '10 分钟前', price: 25 },
+          { title: '东区食堂三楼拼奶茶，还差 2 人', img: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=300&h=200&fit=crop', type: '拼单搭子', user: '李四', time: '25 分钟前', reward: '人均 ¥12' },
+          { title: '出二手显示器戴尔24寸，用了半年', img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=300&h=200&fit=crop', type: '二手交易', user: '张三', time: '4 小时前', price: 380 },
+          { title: '求帮取快递到 6 栋宿舍，酬谢 5 元', img: 'https://images.unsplash.com/photo-1603400521630-9f2de124b33b?w=300&h=200&fit=crop', type: '跑腿委托', user: '王五', time: '1 小时前', reward: '报酬 ¥5' },
+          { title: '拾到校园卡一张，请失主联系', img: 'https://images.unsplash.com/photo-1586282391129-76a6df230234?w=300&h=200&fit=crop', type: '失物招领', user: '赵六', time: '2 小时前', reward: '拾物招领' },
+          { title: '出英语六级真题，含听力光盘', img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=300&h=200&fit=crop', type: '二手交易', user: '刘一', time: '6 小时前', price: 15 },
+        ])
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goDetail = (item) => {
+          if (item.type === '二手交易') window.location.href = 'item-detail.html'
+          else if (item.type === '失物招领') window.location.href = 'lost-detail.html'
+          else if (item.type === '拼单搭子') window.location.href = 'group-detail.html'
+          else window.location.href = 'task-detail.html'
+        }
+        return { keyword, favorites, goPublish, goDetail }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 发布跑腿委托</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .form-section { background:#fff; border-radius:12px; padding:32px; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+    .tip-card { background:#f5f7fa; border-radius:12px; padding:24px; }
+    .tip-card h4 { font-size:15px; font-weight:600; margin-bottom:12px; }
+    .tip-card li { font-size:13px; color:#4e5969; line-height:1.8; padding-left:12px; position:relative; }
+    .tip-card li::before { content:'•'; position:absolute; left:0; color:#00b578; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <div class="category-nav">
+      <div class="container">
+        <el-breadcrumb>
+          <el-breadcrumb-item><a href="publish.html">发布信息</a></el-breadcrumb-item>
+          <el-breadcrumb-item>发布跑腿委托</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+    </div>
+    <main class="page-main">
+      <div class="container">
+        <div class="form-layout">
+          <div class="form-section">
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:24px;">发布跑腿委托</h2>
+            <el-steps :active="1" simple style="margin-bottom:32px;">
+              <el-step title="填写信息" icon="Edit"></el-step>
+              <el-step title="确认发布" icon="Select"></el-step>
+              <el-step title="发布成功" icon="Check"></el-step>
+            </el-steps>
+            <el-form label-position="top">
+              <el-form-item label="任务标题">
+                <el-input placeholder="例：求帮取快递到 6 栋宿舍，酬谢 5 元" size="large"></el-input>
+              </el-form-item>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="跑腿分类">
+                    <el-select style="width:100%;" placeholder="选择分类" size="large">
+                      <el-option label="代取快递" value="express"></el-option>
+                      <el-option label="代买带饭" value="buy"></el-option>
+                      <el-option label="代打印" value="print"></el-option>
+                      <el-option label="代送物品" value="deliver"></el-option>
+                      <el-option label="其他" value="other"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="报酬（元）">
+                    <el-input placeholder="例：5" size="large">
+                      <template #prefix>¥</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="取件/起始地点">
+                    <el-input placeholder="例：校本部菜鸟驿站" size="large"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="送达/目的地点">
+                    <el-input placeholder="例：6 栋宿舍楼下" size="large"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="期望完成时间">
+                    <el-date-picker style="width:100%;" type="datetime" placeholder="选择期望完成时间" size="large"></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="联系方式">
+                    <el-input placeholder="手机号或微信" size="large"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-form-item label="任务详细描述">
+                <el-input type="textarea" :rows="5" placeholder="描述跑腿任务的具体内容，如快递取件码、购买物品清单、送达注意事项等。描述越详细，接单者越容易完成任务"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-checkbox>我已阅读并同意 <a href="#" style="color:#2d8cf0;">《发布须知》</a></el-checkbox>
+              </el-form-item>
+              <div style="display:flex;gap:12px;">
+                <el-button type="success" size="large" style="width:160px;">提交发布</el-button>
+                <el-button size="large">保存草稿</el-button>
+              </div>
+            </el-form>
+          </div>
+          <div>
+            <div class="tip-card">
+              <h4>💡 发布提示</h4>
+              <ul style="list-style:none;padding:0;">
+                <li>合理设定报酬金额更容易找到接单人</li>
+                <li>详细描述任务内容可减少沟通成本</li>
+                <li>取件码等敏感信息建议通过私聊发送</li>
+                <li>完成任务后及时确认并支付报酬</li>
+                <li>如有纠纷请联系平台客服处理</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        return { keyword }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

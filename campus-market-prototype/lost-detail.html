@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 失物招领详情</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .gallery-main { width:100%; height:420px; border-radius:12px; overflow:hidden; }
+    .gallery-main img { width:100%; height:100%; object-fit:cover; }
+    .side-card { padding:24px; border-radius:12px; background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+    .side-card+.side-card { margin-top:16px; }
+    .detail-title { font-size:22px; font-weight:700; margin:16px 0 12px; }
+    .detail-meta { display:flex; gap:24px; font-size:13px; color:#86909c; margin-bottom:16px; flex-wrap:wrap; }
+    .detail-desc { font-size:15px; line-height:1.8; color:#4e5969; }
+    .status-badge { display:inline-block; padding:4px 16px; border-radius:20px; font-size:13px; font-weight:600; }
+    .status-found { background:#e8f8f0; color:#00b578; }
+    .status-lost { background:#ffece8; color:#f53f3f; }
+    .recommend-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .recommend-card { cursor:pointer; }
+    .recommend-card img { width:100%; height:120px; object-fit:cover; border-radius:8px; }
+    .recommend-card h4 { font-size:13px; font-weight:600; margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search"><el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input></div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+    <div class="category-nav">
+      <div class="container">
+        <a href="home.html">综合</a>
+        <a href="home.html?cat=trade">二手交易</a>
+        <a href="home.html?cat=lost" class="active">失物招领</a>
+        <a href="home.html?cat=group">拼单搭子</a>
+        <a href="home.html?cat=task">跑腿委托</a>
+      </div>
+    </div>
+    <main class="page-main">
+      <div class="container">
+        <el-breadcrumb style="margin-bottom:20px;">
+          <el-breadcrumb-item><a href="home.html">首页</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a href="category.html">失物招领</a></el-breadcrumb-item>
+          <el-breadcrumb-item>详情</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="detail-layout">
+          <div>
+            <div class="gallery-main">
+              <img src="https://images.unsplash.com/photo-1586282391129-76a6df230234?w=800&h=500&fit=crop" alt="失物图片">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <img v-for="i in 3" :key="i" :src="'https://images.unsplash.com/photo-1586282391129-76a6df230234?w=200&h=150&fit=crop&sig='+i" style="width:80px;height:60px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid transparent;" :style="{borderColor:activeImg===i?'#2d8cf0':'transparent'}" @click="activeImg=i">
+            </div>
+            <div style="margin-top:20px;">
+              <span class="status-badge status-found">🔍 拾物招领</span>
+            </div>
+            <div class="detail-title">拾到校园卡一张，请失主联系</div>
+            <div class="detail-meta">
+              <span>📍 校本部 · 图书馆二楼</span>
+              <span>🕐 2 小时前发布</span>
+              <span>👁 浏览 56 次</span>
+            </div>
+            <div class="detail-desc">
+              <p>在图书馆二楼靠窗区域拾到校园卡一张。</p>
+              <p>卡面信息：2024 级，信息学院，学号 2024XXXXX。</p>
+              <p>为保护隐私，未公开完整姓名和学号。请失主提供校园卡背面信息验证。</p>
+              <p>请失主尽快联系认领～</p>
+            </div>
+            <el-divider></el-divider>
+            <el-button type="primary" size="large" style="width:200px;" @click="goChat">💬 联系发布者</el-button>
+            <el-button size="large" style="margin-left:12px;">🔔 我也遇到过</el-button>
+            <el-button text size="small" style="margin-left:12px;color:#86909c;">举报</el-button>
+            <el-divider></el-divider>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">其他失物信息</h3>
+            <div class="recommend-grid">
+              <div class="recommend-card" @click="goLostDetail">
+                <img src="https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=300&h=200&fit=crop" alt="">
+                <h4>西门打印店附近丢失黑色耳机盒</h4>
+              </div>
+              <div class="recommend-card" @click="goLostDetail">
+                <img src="https://images.unsplash.com/photo-1594226801341-41427b4e5a22?w=300&h=200&fit=crop" alt="">
+                <h4>拾到钥匙一串，蓝色挂件，在图书馆</h4>
+              </div>
+              <div class="recommend-card" @click="goLostDetail">
+                <img src="https://images.unsplash.com/photo-1586282391129-76a6df230234?w=300&h=200&fit=crop" alt="">
+                <h4>拾到学生证，请失主联系</h4>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="side-card">
+              <div style="display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid #e5e6eb;margin-bottom:16px;">
+                <el-avatar :size="48" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"></el-avatar>
+                <div>
+                  <h4 style="font-size:15px;font-weight:600;">赵六</h4>
+                  <p style="font-size:13px;color:#86909c;">校本部 · 信息学院</p>
+                </div>
+              </div>
+              <el-button type="primary" style="width:100%;margin-bottom:8px;" @click="goChat">💬 联系Ta</el-button>
+              <div style="margin-top:16px;font-size:13px;color:#86909c;">
+                <div>已发布 5 条信息</div>
+                <div>注册时间：2025年9月</div>
+              </div>
+            </div>
+            <div class="side-card">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">物品信息</h4>
+              <div style="font-size:13px;color:#4e5969;line-height:2;">
+                <div>类型：拾物招领</div>
+                <div>物品：校园卡</div>
+                <div>拾取地点：图书馆二楼</div>
+                <div>拾取时间：2026年6月28日</div>
+                <div>状态：<span style="color:#00b578;font-weight:600;">待认领</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref(''); const activeImg = ref(1)
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goChat = () => { window.location.href = 'chat.html' }
+        const goLostDetail = () => { window.location.href = 'lost-detail.html' }
+        return { keyword, activeImg, goPublish, goChat, goLostDetail }
+      }
+    })
+    app.use(ElementPlus); app.mount('#app')
+  </script>
+</body>
+</html>

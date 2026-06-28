@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园轻集市 - 商品详情</title>
+  <link href="https://cdn.jsdelivr.net/npm/element-plus/dist/index.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus/dist/index.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/common.css">
+  <style>
+    .gallery-main { width: 100%; height: 420px; border-radius: 12px; overflow: hidden; }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+    .side-card { padding: 24px; border-radius: 12px; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .side-card + .side-card { margin-top: 16px; }
+    .detail-price { font-size: 28px; font-weight: 700; color: #f53f3f; }
+    .detail-title { font-size: 22px; font-weight: 700; margin: 16px 0 12px; }
+    .detail-meta { display: flex; gap: 24px; font-size: 13px; color: #86909c; margin-bottom: 16px; }
+    .detail-desc { font-size: 15px; line-height: 1.8; color: #4e5969; }
+    .seller-card { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #e5e6eb; margin-bottom: 16px; }
+    .seller-card .info h4 { font-size: 15px; font-weight: 600; }
+    .seller-card .info p { font-size: 13px; color: #86909c; }
+    .recommend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .recommend-card { cursor: pointer; }
+    .recommend-card img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; }
+    .recommend-card h4 { font-size: 13px; font-weight: 600; margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .recommend-card .p { font-size: 14px; font-weight: 700; color: #f53f3f; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="top-header">
+      <div class="container">
+        <a href="index.html" class="logo">校园轻集市</a>
+        <div class="header-search">
+          <el-input v-model="keyword" placeholder="搜索..." prefix-icon="Search" clearable></el-input>
+        </div>
+        <div class="header-actions">
+          <el-button type="primary" size="default" @click="goPublish">发布信息</el-button>
+          <a href="messages.html"><el-badge :value="3"><el-button :icon="'ChatDotSquare'" circle></el-button></el-badge></a>
+          <a href="profile.html"><el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="category-nav">
+      <div class="container">
+        <a href="home.html">综合</a>
+        <a href="home.html?cat=trade" class="active">二手交易</a>
+        <a href="home.html?cat=lost">失物招领</a>
+        <a href="home.html?cat=group">拼单搭子</a>
+        <a href="home.html?cat=task">跑腿委托</a>
+      </div>
+    </div>
+
+    <main class="page-main">
+      <div class="container">
+        <el-breadcrumb style="margin-bottom:20px;">
+          <el-breadcrumb-item><a href="home.html">首页</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a href="category.html">二手交易</a></el-breadcrumb-item>
+          <el-breadcrumb-item>商品详情</el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <div class="detail-layout">
+          <!-- 左：主体内容 -->
+          <div>
+            <div class="gallery-main">
+              <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=800&h=500&fit=crop" alt="商品图片">
+            </div>
+            <div style="display:flex; gap:8px; margin-top:12px;">
+              <img v-for="i in 4" :key="i" :src="'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200&h=150&fit=crop&sig='+i" style="width:80px;height:60px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid transparent;" :style="{borderColor: activeImg === i ? '#2d8cf0' : 'transparent'}" @click="activeImg=i">
+            </div>
+
+            <div class="detail-title">出闲置教材《软件工程导论》，九成新，可小刀</div>
+            <div class="detail-price">¥25</div>
+            <div class="detail-meta">
+              <span>📂 二手交易</span>
+              <span>📍 校本部 · 图书馆</span>
+              <span>🕐 10 分钟前发布</span>
+              <span>👁 浏览 128 次</span>
+            </div>
+            <div style="margin-bottom:16px;">
+              <el-tag size="small">九成新</el-tag>
+              <el-tag size="small" type="success" style="margin-left:6px;">可小刀</el-tag>
+              <el-tag size="small" type="info" style="margin-left:6px;">自提</el-tag>
+            </div>
+            <div class="detail-desc">
+              <p>软件工程导论（第6版），张海藩著，清华大学出版社。</p>
+              <p>大二上学期教材，课程结束后闲置。书页干净无涂写，仅封面有轻微折痕，不影响阅读。</p>
+              <p>价格可小刀，支持校本部图书馆附近自提。有意者请私聊联系，谢谢～</p>
+            </div>
+            <el-divider></el-divider>
+            <el-button type="danger" size="large" style="width:200px;" @click="goChat">💬 联系卖家</el-button>
+            <el-button size="large" style="margin-left:12px;">🤍 收藏</el-button>
+            <el-button text size="small" style="margin-left:12px; color:#86909c;">举报</el-button>
+
+            <el-divider></el-divider>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">相关推荐</h3>
+            <div class="recommend-grid">
+              <div class="recommend-card" @click="goItemDetail">
+                <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=300&h=200&fit=crop" alt="">
+                <h4>出二手显示器戴尔24寸，用了半年</h4>
+                <div class="p">¥380</div>
+              </div>
+              <div class="recommend-card" @click="goItemDetail">
+                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=300&h=200&fit=crop" alt="">
+                <h4>出英语六级真题，含听力光盘</h4>
+                <div class="p">¥15</div>
+              </div>
+              <div class="recommend-card" @click="goItemDetail">
+                <img src="https://images.unsplash.com/photo-1594575111057-47b35c5f98f7?w=300&h=200&fit=crop" alt="">
+                <h4>出考研数学复习全书全套</h4>
+                <div class="p">¥40</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：信息栏 -->
+          <div>
+            <div class="side-card">
+              <div class="seller-card">
+                <el-avatar :size="48" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+                <div class="info">
+                  <h4>张三</h4>
+                  <p>校本部 · 信息学院</p>
+                </div>
+              </div>
+              <el-button type="primary" style="width:100%; margin-bottom:8px;" @click="goChat">💬 联系Ta</el-button>
+              <el-button style="width:100%;" @click="goChat">📞 查看联系方式</el-button>
+              <div style="margin-top:16px; font-size:13px; color:#86909c;">
+                <div>已发布 12 条信息</div>
+                <div>注册时间：2025年9月</div>
+                <div style="margin-top:4px;"><span style="color:#00b578;">● 在线</span></div>
+              </div>
+            </div>
+
+            <div class="side-card">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">交易信息</h4>
+              <div style="font-size:13px;color:#4e5969;line-height:2;">
+                <div>价格：<span style="font-weight:600;color:#f53f3f;">¥25</span></div>
+                <div>成色：九成新</div>
+                <div>交易方式：面交自提</div>
+                <div>交易地点：校本部图书馆</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="footer"><p>校园轻集市 · 高保真原型 · 仅供教学演示</p></div>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue
+    const app = createApp({
+      setup() {
+        const keyword = ref('')
+        const activeImg = ref(1)
+        const goPublish = () => { window.location.href = 'publish.html' }
+        const goChat = () => { window.location.href = 'chat.html' }
+        const goItemDetail = () => { window.location.href = 'item-detail.html' }
+        return { keyword, activeImg, goPublish, goChat, goItemDetail }
+      }
+    })
+    app.use(ElementPlus)
+    app.mount('#app')
+  </script>
+</body>
+</html>
