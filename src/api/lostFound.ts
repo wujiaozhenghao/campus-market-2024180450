@@ -1,7 +1,7 @@
 import http from './http'
 
 export interface LostFoundItem {
-  id: number
+  id?: number
   title: string
   type: 'lost' | 'found'
   itemName: string
@@ -14,4 +14,8 @@ export interface LostFoundItem {
 
 export function getLostFounds() {
   return http.get<LostFoundItem[]>('/lostFounds')
+}
+
+export function createLostFound(data: LostFoundItem) {
+  return http.post<LostFoundItem>('/lostFounds', data)
 }

@@ -1,7 +1,7 @@
 import http from './http'
 
 export interface GroupBuyItem {
-  id: number
+  id?: number
   title: string
   type: string
   targetCount: number
@@ -15,4 +15,8 @@ export interface GroupBuyItem {
 
 export function getGroupBuys() {
   return http.get<GroupBuyItem[]>('/groupBuys')
+}
+
+export function createGroupBuy(data: GroupBuyItem) {
+  return http.post<GroupBuyItem>('/groupBuys', data)
 }

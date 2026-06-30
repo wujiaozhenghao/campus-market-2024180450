@@ -1,7 +1,7 @@
 import http from './http'
 
 export interface TradeItem {
-  id: number
+  id?: number
   title: string
   category: string
   price: number
@@ -16,4 +16,8 @@ export interface TradeItem {
 
 export function getTrades() {
   return http.get<TradeItem[]>('/trades')
+}
+
+export function createTrade(data: TradeItem) {
+  return http.post<TradeItem>('/trades', data)
 }
