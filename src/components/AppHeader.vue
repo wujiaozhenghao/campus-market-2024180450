@@ -6,11 +6,18 @@
     </div>
 
     <AppNav />
+
+    <div class="user-mini">
+      <span>{{ userStore.displayName }}</span>
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
 import AppNav from './AppNav.vue'
+import { useUserStore } from '../stores/user'
+
+const userStore = useUserStore()
 </script>
 
 <style scoped>
@@ -38,5 +45,10 @@ import AppNav from './AppNav.vue'
 .slogan {
   font-size: 13px;
   color: #6b7280;
+}
+
+.user-mini {
+  font-size: 14px;
+  color: #374151;
 }
 </style>
