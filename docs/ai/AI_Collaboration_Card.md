@@ -1,107 +1,86 @@
 # AI Collaboration Card
 
-该文档将在后续版本中完善。
+## 1. 使用的 AI 工具
 
-当前请按照教师要求记录：
+- VS Code 内置 AI Coding 插件（opencode）
+- 模型：opencode/big-pickle
 
-- Prompt
-- AI 输出
-- 自己修改
-- 最终验证
-1. 项目目录结构分析
-campus-market-seed/
-├── .editorconfig           # 编辑器统一配置
-├── .git/                   # Git 仓库
-├── .gitattributes
-├── .gitignore
-├── .nvmrc                  # Node 版本锁定
-├── .oxlintrc.json          # OxLint 配置
-├── CHECK_REPORT.md         # 检查报告
-├── docs/                   # 文档目录
-│   ├── ai/                 # AI 相关文档
-│   ├── evidence/           # 证据卡
-│   └── guide/              # 指南
-├── env.d.ts                # 环境类型声明
-├── eslint.config.ts        # ESLint 配置
-├── index.html              # HTML 入口
-├── node_modules/
-├── package.json
-├── pnpm-lock.yaml
-├── public/                 # 静态资源
-├── scripts/                # 脚本
-├── src/
-│   ├── api/                # API 层（目前空）
-│   ├── App.vue             # 根组件
-│   ├── components/         # 公共组件（目前空）
-│   ├── main.ts             # 应用入口
-│   ├── router/             # 路由
-│   │   └── index.ts
-│   ├── stores/             # 状态管理（目前空）
-│   └── views/              # 页面视图
-│       └── HomeView.vue
-├── tsconfig.app.json       # 应用 TS 配置
-├── tsconfig.json           # 根 TS 配置
-├── tsconfig.node.json      # Node 侧 TS 配置
-├── VERSION.md
-└── vite.config.ts          # Vite 构建配置
-目录结构特点: 采用约定式分层架构，api/、components/、stores/ 为预留的空目录，等待后续填充业务代码。
+## 2. AI 参与的任务
 
-2. main.ts 解释
-import { createApp } from 'vue'          // ① 创建 Vue 应用实例
-import { createPinia } from 'pinia'      // ② 引入 Pinia 状态管理
+| 阶段 | AI 辅助内容 | 人工调整内容 |
+|------|------------|-------------|
+| Day1 | 项目结构分析、技术栈梳理、项目规划初稿 | 修正了后续计划中不现实的「Token 管理」等目标，调整为与实训进度匹配的功能范围 |
+| Day2 | AppLayout/AppHeader/AppNav 页面骨架模板、路由配置 | 调整了布局样式和导航项文案，删除了 AI 生成的多余路由占位 |
+| Day3 | db.json Mock 数据生成、API 模块类型定义、列表渲染模板 | 补充了字段（如 publisher、publishTime），使数据更贴合校园场景 |
+| Day4 | PublishView 四类表单模板、FormField 组件 | 删除了 AI 生成的图片上传和复杂登录逻辑，聚焦于纯表单提交 |
+| Day5 | Pinia Store 框架代码、收藏功能逻辑、UserCenterView 布局 | 修正了类型定义（CurrentUser 接口未使用），调整了空状态处理 |
+| Day6 | LoginView/RegisterView 模板、LoadingState/ErrorState/SearchBar 组件 | 修复了类型 null 安全（currentUser?.bio），补充了用户名查重逻辑 |
+| Day7 | 走查测试脚本框架、CHECK_REPORT.md 结构、README 优化 | 补充了真实测试数据，修正了证据卡关键词缺失 |
 
-import App from './App.vue'              // ③ 根组件
-import router from './router'            // ④ 路由
+## 3. 典型提示词
 
-const app = createApp(App)               // ⑤ 用根组件创建 app 实例
+```
+我正在开发一个 Vue3 + Vite + TypeScript 的校园集市项目。
+需要在 src/api/ 目录下创建 trade.ts API 模块，
+包含 TradeItem 接口和 getTrades() 方法，
+使用 Axios 从 JSON Server 的 /trades 端点获取数据。
+不要引入复杂类型工具，使用基本的 TypeScript 接口定义。
+```
 
-app.use(createPinia())                   // ⑥ 注册 Pinia 插件 → 全局可用 useXxxStore()
-app.use(router)                          // ⑦ 注册 Vue Router 插件 → 全局可用 <RouterView/> / useRouter()
+```
+为 TradeView.vue 增加搜索功能、加载状态和错误状态。
+搜索应基于客户端 computed 过滤标题/分类/地点/描述。
+已存在 ItemCard、EmptyState 组件。
+保留现有的收藏按钮逻辑。
+```
 
-app.mount('#app')                        // ⑧ 挂载到 index.html 中 <div id="app">
-执行顺序: createApp → use(Pinia) → use(Router) → mount。这是 Vue 3 组合式 API 生态下的标准启动流程。
+## 4. AI 生成内容的问题
 
-3. Router 的作用
-// src/router/index.ts
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
+### 字段不贴合业务
+AI 生成的 Mock 数据中，部分字段名称过于通用（如 `type`、`status`），没有体现校园场景特点。人工调整为 `publisher`（发布人）、`publishTime`（发布时间）、`condition`（成色）、`location`（地点）等更贴合校园集市业务的字段名。
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),  // HTML5 History 模式（无 #）
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-  ],
-})
+### 代码过度复杂
+AI 在生成发布表单时，自动加入了图片上传组件和 base64 转换逻辑，对于本项目（无真实后端、无文件存储）完全不适用。人工删除了这些内容，仅保留文本和数字输入。
 
-export default router
-Router 的核心作用:
+### 引入超出范围的功能
+AI 在 `userStore` 初始版本中生成了 JWT Token 存储、登录过期判断、权限路由守卫等代码。本项目明确使用 JSON Server Mock 认证，不需要这些生产级功能。人工删除了全部 Token 和权限相关代码。
 
-URL ↔ 组件映射: 访问 / 时渲染 HomeView.vue；后续添加 /goods、/cart 等路由只需在 routes 数组中追加条目。
-createWebHistory: 使用 HTML5 History API，URL 中不包含 #，更美观（需要服务端 fallback 支持）。
-<RouterView /> 出口: 在 App.vue:7 中使用 <RouterView />，路由匹配到的组件会渲染在此处。
-命名路由: name: 'home' 允许通过 router.push({ name: 'home' }) 导航，不硬编码路径。
-4. 技术栈分析
-从 package.json 可归纳出完整技术栈：
+### 组件抽象过度
+AI 建议将 `ItemCard.vue` 拆分为 `CardHeader`、`CardBody`、`CardFooter` 三个子组件。对于本项目（仅 4 个列表页共用一个卡片样式），这种拆分增加了文件数量但没有实质收益。保留为单个组件。
 
-类别	技术	版本	说明
-框架	Vue 3	^3.5.38	Composition API + <script setup>
-路由	Vue Router 5	^5.1.0	v5 对应 Vue 3，支持组合式 API
-状态管理	Pinia 3	^3.0.4	Vue 3 官方推荐，替代 Vuex
-构建工具	Vite 8	^8.0.16	极速 dev server + ESM 构建
-语言	TypeScript 6	~6.0.0	类型安全
-包管理器	pnpm	11.9.0	快速、节省磁盘
-Lint	ESLint 10 + OxLint 1.69	—	双重 lint
-类型检查	vue-tsc 3	^3.3.5	IDE 级类型校验
-插件	@vitejs/plugin-vue 6	—	编译 .vue SFC
-工具	vue-devtools 插件	—	开发调试
-架构模式: SPA（单页应用），通过 Vue Router 实现客户端路由，Pinia 管理全局状态，API 层与后端通信。
+### 生成内容无法直接运行
+AI 生成的代码有时包含虚假的 import 路径（如 `@/utils/format`）或未定义的变量。人工逐行检查后修正了所有 import 路径和变量引用。
 
-自己的理解
-这是一个校园集市（Campus Market）Vue 3 前端种子项目。目前处于骨架阶段——路由、状态管理、API 层的目录结构已经搭好，但内部尚未填充具体业务逻辑。api/、stores/、components/ 三个目录仅含 .gitkeep 文件，等待后续按每日任务逐步实现商品列表、购物车、用户认证等功能。
+## 5. 我的判断与修改
 
-最终结论
-项目采用了 Vue 3 + TypeScript + Vite + Pinia + Vue Router 的现代前端技术栈，目录结构遵循关注点分离原则（视图/路由/状态/API/组件各司其职）。main.ts 是应用的唯一入口，通过插件机制组合各模块；Router 负责 URL 与页面的映射，目前仅配置了首页路由，是后续功能扩展的核心枢纽。整体项目是一个为实训场景设计的渐进式开发种子工程。
+判断标准：
+1. **项目范围** — 功能是否在 Day1 规划的需求范围内？不在则删除（如图片上传、JWT、权限路由）
+2. **代码复杂度** — 增加的文件和代码量是否带来相应的价值？不带来则合并或简化
+3. **类型安全** — 是否存在 TypeScript 编译错误？存在则修复（如 null 安全、未使用的接口）
+4. **样式一致性** — 是否与已有组件的风格（白色卡片、圆角、灰色文字）一致？不一致则调整
+
+修改流程：
+1. AI 生成代码后，先执行 `pnpm type-check` 和 `pnpm lint` 发现基础问题
+2. 逐行阅读 AI 生成的代码，特别关注 import 路径、类型定义、函数参数
+3. 对比已有代码风格，调整命名和格式
+4. 运行 `pnpm dev` 手动测试页面表现
+5. 运行 `pnpm build` 确保构建通过
+
+## 6. 总结
+
+AI 在本项目中的主要效率提升体现在三个方面：
+
+**模板代码生成**：表单结构、列表渲染、CSS 样式这些「机械性」工作，AI 可以一次生成 80% 正确的内容，人工只需要微调。如果没有 AI，这些代码的逐行编写会占用大量时间。
+
+**代码审查辅助**：AI 在生成代码时会自动考虑一些边界情况（如空状态、加载状态），这些在纯人工开发中容易被遗忘。AI 相当于一个「预审查者」，先提供一个包含基本边界的版本，人工在此基础上补充遗漏的场景。
+
+**文档和注释整理**：证据卡、README 等文档的结构化内容由 AI 生成框架，人工填充真实数据和反思。这样既保证了文档格式统一，又保留了内容的真实性。
+
+但以下部分必须由开发者自己理解和判断：
+
+1. **业务逻辑正确性** — AI 不理解「校园集市」的业务场景，无法判断字段是否合理、流程是否完整
+2. **代码取舍** — AI 倾向于生成「完整但复杂」的代码，开发者需要根据项目范围判断哪些功能可以砍掉
+3. **类型安全** — AI 生成的 TypeScript 代码经常有类型错误，开发者需要具备类型系统的知识才能修复
+4. **项目稳定性** — AI 不关心「新代码是否破坏了已有功能」，开发者必须通过构建和手动测试来验证
+
+> 本实训的核心目标不是证明「AI 可以自动完成项目」，而是证明开发者「能够管理 AI、审查 AI、修正 AI，并独立完成项目」。
