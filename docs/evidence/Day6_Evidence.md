@@ -74,8 +74,8 @@ Vue 的 Pinia 状态默认只存在于内存中，一旦用户刷新页面，所
 ### 加载状态
 `LoadingState.vue` 使用纯 CSS 旋转动画（`@keyframes spin`），28px 蓝色圆形 Spinner，下方显示自定义文本（默认「正在加载数据...」）。`TradeView.vue` 中，`loadTrades()` 开始时设置 `loading = true`，完成后置为 `false`。
 
-### 错误与重试
-`ErrorState.vue` 以红色边框卡片形式展示错误消息，通过 `showRetry` 属性控制是否显示「重新加载」按钮。点击后触发 `retry` 事件，父组件重新调用 `loadTrades()`。当 JSON Server 未启动或网络故障时，用户可以获得明确的错误提示并一键重试。
+### 错误状态与重试
+`ErrorState.vue` 以红色边框卡片形式展示错误消息，通过 `showRetry` 属性控制是否显示「重新加载」按钮。点击后触发 `retry` 事件，父组件重新调用 `loadTrades()`。当 JSON Server 未启动或网络故障时，用户可以获得明确的错误状态提示并一键重试。
 
 ### 空状态
 `EmptyState.vue` 在「无搜索结果」或「收藏列表为空」「发布记录为空」时展示，提示文案可通过 `text` prop 自定义。

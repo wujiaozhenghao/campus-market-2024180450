@@ -42,7 +42,20 @@
 | `/login` | 登录 | 用户名+密码 |
 | `/register` | 注册 | 5 字段表单 |
 
-## 5. 项目运行
+## 5. 项目目录说明
+
+| 目录 / 文件 | 说明 |
+|-------------|------|
+| `src/api` | 接口请求模块（http.ts + 5 个业务模块） |
+| `src/components` | 公共组件（9 个：布局/导航/卡片/表单/状态等） |
+| `src/router` | 路由配置（10 条） |
+| `src/stores` | Pinia 状态管理（user + favorite） |
+| `src/views` | 页面组件（10 个） |
+| `docs/evidence` | 每日证据卡（Day1-Day7） |
+| `docs/ai` | AI 协作记录 |
+| `db.json` | Mock 数据（users + 4 类业务数据） |
+
+## 6. 项目运行
 
 ```bash
 # 安装依赖
@@ -58,38 +71,18 @@ pnpm dev
 pnpm build
 ```
 
-## 6. 项目结构
+## 7. 每日开发记录
 
-```
-campus-market-seed/
-├── db.json                  # Mock 数据
-├── src/
-│   ├── api/                 # API 封装（6 个模块）
-│   ├── components/          # 通用组件（9 个）
-│   ├── router/              # 路由配置（10 条）
-│   ├── stores/              # Pinia 状态管理
-│   ├── views/               # 页面视图（10 个）
-│   ├── App.vue
-│   └── main.ts
-├── docs/
-│   ├── ai/                  # AI 协作记录
-│   └── evidence/            # 每日证据卡
-├── scripts/                 # 检测脚本
-└── CHECK_REPORT.md          # 最终检测报告
-```
+| Day | 主题 | 核心交付 |
+|-----|------|---------|
+| Day1 | 项目启动与业务梳理 | 环境搭建、项目结构分析、技术栈梳理 |
+| Day2 | 页面骨架与路由导航 | 10 条路由配置、AppLayout/AppHeader/AppNav |
+| Day3 | Mock 数据建模与列表渲染 | db.json 四类业务数据、API 封装、列表渲染 |
+| Day4 | 发布表单与数据新增 | PublishView 四类表单、POST 请求、表单校验 |
+| Day5 | 状态管理与用户中心 | Pinia userStore/favoriteStore、UserCenterView |
+| Day6 | 交互优化与体验完善 | 注册登录、localStorage 持久化、搜索/状态组件 |
+| Day7 | 综合验收与项目展示 | 18 步走查、CHECK_REPORT.md、README 完善 |
 
-## 7. 检测命令
+## 8. AI 协作说明
 
-```bash
-# 代码检查
-pnpm lint
-
-# 类型检查
-pnpm type-check
-
-# 构建验证
-pnpm build
-
-# 自动检测（Day3 校验）
-pnpm check -- --day=3
-```
+本项目在开发过程中使用 AI Coding 工具辅助完成页面骨架、Mock 数据、接口封装、表单设计、状态管理和交互优化。开发者对 AI 生成内容进行了人工审查、修改和取舍，具体过程记录在 `docs/evidence/` 和 `docs/ai/` 中。
