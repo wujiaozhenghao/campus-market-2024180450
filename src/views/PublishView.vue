@@ -256,6 +256,12 @@ function getCurrentTime() {
 }
 
 async function handleSubmit() {
+  if (!userStore.isLoggedIn || !userStore.currentUser) {
+    window.alert('请先登录后再发布信息')
+    router.push('/login')
+    return
+  }
+
   if (!validateForm()) return
 
   submitting.value = true
@@ -331,7 +337,7 @@ async function handleSubmit() {
     resetForm()
   } catch (error) {
     console.error(error)
-    window.alert('发布失败，请检查 Mock 服务是否正常运行')
+    window.alert('发布失败，请确认 JSON Server 已启动，并检查表单数据是否完整。')
   } finally {
     submitting.value = false
   }

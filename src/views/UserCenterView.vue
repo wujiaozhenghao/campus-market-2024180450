@@ -1,63 +1,71 @@
 <template>
   <section class="page">
-    <div class="profile-card">
-      <div class="avatar">
-        {{ userStore.displayName.slice(0, 1) }}
-      </div>
-
-      <div>
-        <h1>{{ userStore.displayName }}</h1>
-        <p>{{ userStore.userDescription }}</p>
-        <p>{{ userStore.currentUser.bio }}</p>
-      </div>
+    <div v-if="!userStore.isLoggedIn" class="panel">
+      <h1>请先登录</h1>
+      <p>登录后可以查看个人资料、我的收藏和我的发布。</p>
+      <RouterLink class="login-link" to="/login">去登录</RouterLink>
     </div>
 
-    <div class="panel">
-      <h2>我的收藏 ({{ favoriteStore.favorites.length }})</h2>
+    <template v-else>
+      <div class="profile-card">
+        <div class="avatar">
+          {{ userStore.displayName.slice(0, 1) }}
+        </div>
 
-      <EmptyState
-        v-if="favoriteStore.favorites.length === 0"
-        text="暂无收藏内容"
-      />
-
-      <div v-else class="post-list">
-        <ItemCard
-          v-for="item in favoriteStore.favorites"
-          :key="`fav-${item.type}-${item.id}`"
-          :title="item.title"
-          :description="item.description"
-          :tag="getTypeLabel(item.type)"
-          :location="item.location"
-        >
-          <template #footer>
-            <button class="action-btn" @click="favoriteStore.removeFavorite(item.type, item.id)">
-              取消收藏
-            </button>
-          </template>
-        </ItemCard>
+        <div>
+          <h1>{{ userStore.displayName }}</h1>
+          <p>{{ userStore.userDescription }}</p>
+          <p>{{ userStore.currentUser?.bio }}</p>
+        </div>
       </div>
-    </div>
 
-    <div class="panel">
-      <h2>我的发布 ({{ myPosts.length }})</h2>
+      <div class="panel">
+        <h2>我的收藏 ({{ favoriteStore.favorites.length }})</h2>
 
-      <EmptyState
-        v-if="myPosts.length === 0"
-        text="暂无发布记录"
-      />
-
-      <div v-else class="post-list">
-        <ItemCard
-          v-for="(item, idx) in myPosts"
-          :key="`pub-${item.type}-${item.id}-${idx}`"
-          :title="item.title"
-          :description="item.description"
-          :tag="getTypeLabel(item.type)"
-          :location="item.location"
-          :time="item.time"
+        <EmptyState
+          v-if="favoriteStore.favorites.length === 0"
+          text="暂无收藏内容"
         />
+
+        <div v-else class="post-list">
+          <ItemCard
+            v-for="item in favoriteStore.favorites"
+            :key="`fav-${item.type}-${item.id}`"
+            :title="item.title"
+            :description="item.description"
+            :tag="getTypeLabel(item.type)"
+            :location="item.location"
+          >
+            <template #footer>
+              <button class="action-btn" @click="favoriteStore.removeFavorite(item.type, item.id)">
+                取消收藏
+              </button>
+            </template>
+          </ItemCard>
+        </div>
       </div>
-    </div>
+
+      <div class="panel">
+        <h2>我的发布 ({{ myPosts.length }})</h2>
+
+        <EmptyState
+          v-if="myPosts.length === 0"
+          text="暂无发布记录"
+        />
+
+        <div v-else class="post-list">
+          <ItemCard
+            v-for="(item, idx) in myPosts"
+            :key="`pub-${item.type}-${item.id}-${idx}`"
+            :title="item.title"
+            :description="item.description"
+            :tag="getTypeLabel(item.type)"
+            :location="item.location"
+            :time="item.time"
+          />
+        </div>
+      </div>
+    </template>
   </section>
 </template>
 
@@ -186,5 +194,15 @@ function getTypeLabel(type: string) {
   cursor: pointer;
   background: #f3f4f6;
   color: #374151;
+}
+
+.login-link {
+  display: inline-block;
+  margin-top: 12px;
+  border-radius: 8px;
+  padding: 10px 18px;
+  background: #2563eb;
+  color: #fff;
+  text-decoration: none;
 }
 </style>

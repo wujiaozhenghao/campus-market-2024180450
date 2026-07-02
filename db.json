@@ -1,4 +1,16 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "username": "student",
+      "password": "123456",
+      "name": "校园用户",
+      "college": "计算机学院",
+      "grade": "2023级",
+      "avatar": "",
+      "bio": "热爱校园生活，喜欢分享闲置好物。"
+    }
+  ],
   "trades": [
     {
       "id": 1,
