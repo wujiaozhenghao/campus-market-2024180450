@@ -1,83 +1,60 @@
 # Day7 证据卡 — 综合验收与项目展示
 
-## 1. 最终功能清单
+## 1. 最终完成内容
 
-校园轻集市经过 7 天开发，共实现以下功能：
+校园轻集市项目经过 7 天开发，完成了以下功能和文档：
 
-### 页面（10 个）
+**功能方面**：实现了 10 个页面、9 个通用组件、6 个 API 模块、2 个 Pinia Store。涵盖首页导航、四类业务列表（二手交易/失物招领/拼单搭子/跑腿委托）、信息发布、消息中心、个人中心、用户注册登录。其中二手交易页面额外支持关键词搜索、收藏交互、loading/error/empty 三态切换。
 
-| 路由 | 页面 | 核心能力 |
-|------|------|---------|
-| `/` | 首页 | 项目入口，导航到各业务板块 |
-| `/trade` | 二手交易 | 列表渲染、关键词搜索、收藏交互、loading/error/empty 三态 |
-| `/lost-found` | 失物招领 | 列表渲染 |
-| `/group-buy` | 拼单搭子 | 列表渲染 |
-| `/errand` | 跑腿委托 | 列表渲染 |
-| `/publish` | 信息发布 | 四类表单切换、字段校验、POST 提交、未登录守卫 |
-| `/message` | 消息中心 | 静态消息展示 |
-| `/user` | 个人中心 | 用户信息、收藏管理、我的发布、未登录提示 |
-| `/login` | 登录 | 用户名+密码校验、错误提示 |
-| `/register` | 注册 | 五字段表单、用户名查重、POST 创建用户 |
+**文档方面**：完成 README.md（项目说明、技术栈、运行方式、目录说明、开发记录、AI 协作说明）、CHECK_REPORT.md（12 维度最终检测报告）、docs/ai/AI_Collaboration_Card.md（7 天 AI 协作全记录）、7 张每日证据卡。
 
-### 通用组件（9 个）
+**基建方面**：14 次 Git 提交覆盖全部开发周期，代码通过 lint/type-check/build 三道关卡验证。
 
-| 组件 | 用途 |
-|------|------|
-| AppLayout.vue | 页面整体布局框架 |
-| AppHeader.vue | 顶部导航栏，登录态条件渲染 |
-| AppNav.vue | 导航菜单 |
-| ItemCard.vue | 信息卡片，slot 自定义尾部 |
-| EmptyState.vue | 空状态占位提示 |
-| FormField.vue | 表单字段包装（标签、必填、错误） |
-| LoadingState.vue | 加载中状态（CSS Spinner） |
-| ErrorState.vue | 加载失败提示（可重试） |
-| SearchBar.vue | 搜索输入框（v-model + 清空） |
+## 2. 最终功能清单
 
-### API 模块（6 个）
+| 功能模块 | 是否完成 | 说明 |
+|---------|---------|------|
+| 首页与导航 | 是 | 页面可访问，AppHeader 导航包含四个业务入口及登录/注册链接 |
+| 二手交易 | 是 | 展示 6 条 Mock 数据，支持关键词搜索（标题/分类/地点/描述），支持收藏交互 |
+| 失物招领 | 是 | 展示 5 条 Mock 数据 |
+| 拼单搭子 | 是 | 展示 5 条 Mock 数据 |
+| 跑腿委托 | 是 | 展示 5 条 Mock 数据 |
+| 发布信息 | 是 | 四类表单（trade/lostFound/groupBuy/errand），含字段校验和 POST 提交，未登录守卫 |
+| 用户注册 | 是 | 五字段表单，用户名查重，POST /users 写入 db.json |
+| 用户登录 | 是 | 用户名+密码校验，localStorage 持久化，刷新保持登录 |
+| 用户中心 | 是 | 展示用户资料、收藏列表、我的发布，未登录时提示登录 |
+| 收藏功能 | 是 | 添加/取消/视觉反馈（蓝色 active 状态） |
+| 状态反馈 | 是 | LoadingState（CSS Spinner）、EmptyState（自定义文案）、ErrorState（红色卡片+重试按钮） |
+| 搜索筛选 | 是 | SearchBar 组件，基于 computed 实时客户端过滤 |
+| README | 是 | 包含项目简介、技术栈、核心功能、页面路由、目录说明、运行方式、每日开发记录、AI 协作说明 |
+| 证据卡 | 是 | Day1—Day7 共 7 张，每张包含真实开发记录、问题记录、AI 协作记录、个人反思 |
+| AI 协作卡 | 是 | docs/ai/AI_Collaboration_Card.md，含 6 个章节：工具、参与任务、典型提示词、问题总结、判断标准、总结 |
+| 检测报告 | 是 | CHECK_REPORT.md，覆盖 12 个检查维度 |
 
-- `http.ts` — Axios 实例（baseURL: localhost:3001）
-- `user.ts` — getUsers / createUser
-- `trade.ts` — getTrades / createTrade
-- `lostFound.ts` — getLostFounds / createLostFound
-- `groupBuy.ts` — getGroupBuys / createGroupBuy
-- `errand.ts` — getErrands / createErrand
+## 3. 构建与检测记录
 
-### Pinia Store（2 个）
+```bash
+# 代码检查 — 通过
+pnpm lint
+# oxlint: 0 warnings, 0 errors
+# eslint: 通过
 
-- **userStore**: `login()`, `logout()`, `restoreLogin()`, `isLoggedIn`, `currentUser`, `displayName`, `userDescription`
-- **favoriteStore**: `addFavorite()`, `removeFavorite()`, `toggleFavorite()`, `isFavorite()`, `favorites`
+# 类型检查 — 通过
+pnpm type-check
+# vue-tsc: 构建通过
 
-### Mock 数据（db.json，5 个集合）
+# 构建项目 — 成功
+pnpm build
+# 143 modules, 166 KB JS + 9 KB CSS, 344ms
 
-| 集合 | 条数 | 说明 |
-|------|------|------|
-| users | 1 | 默认测试用户 |
-| trades | 6 | 二手交易 |
-| lostFounds | 5 | 失物招领 |
-| groupBuys | 5 | 拼单搭子 |
-| errands | 5 | 跑腿委托 |
+# 自动检测 — Day3 脚本 20/20 全部通过
+pnpm check -- --day=3
 
----
-
-## 2. 构建与检测结果
-
-### 代码质量
-
-| 命令 | 结果 | 说明 |
-|------|------|------|
-| `pnpm lint` | ✅ 0 warnings, 0 errors | oxlint + eslint 双重检查 |
-| `pnpm type-check` | ✅ 通过 | vue-tsc 类型检查 |
-| `pnpm build` | ✅ 构建成功 | 143 modules, 166KB JS + 9KB CSS |
-
-### 自动检测（Day3 脚本）
-
-```
-结果: 20/20 全部通过!
+# 最终检测报告 — 12 维度全覆盖
+pnpm build  # 最后一次验证通过
 ```
 
-### 最终检测报告
-
-`CHECK_REPORT.md` 覆盖 12 个检查维度，全部通过。
+所有检测命令均执行成功，项目可稳定构建运行。
 
 ---
 
