@@ -15,46 +15,42 @@
 | 功能模块 | 是否完成 | 说明 |
 |---------|---------|------|
 | 首页与导航 | 是 | 页面可访问，AppHeader 导航包含四个业务入口及登录/注册链接 |
-| 二手交易 | 是 | 展示 6 条 Mock 数据，支持关键词搜索（标题/分类/地点/描述），支持收藏交互 |
+| 二手交易 | 是 | 展示 6 条 Mock 数据，支持关键词搜索和收藏交互 |
 | 失物招领 | 是 | 展示 5 条 Mock 数据 |
 | 拼单搭子 | 是 | 展示 5 条 Mock 数据 |
 | 跑腿委托 | 是 | 展示 5 条 Mock 数据 |
-| 发布信息 | 是 | 四类表单（trade/lostFound/groupBuy/errand），含字段校验和 POST 提交，未登录守卫 |
-| 用户注册 | 是 | 五字段表单，用户名查重，POST /users 写入 db.json |
-| 用户登录 | 是 | 用户名+密码校验，localStorage 持久化，刷新保持登录 |
+| 发布信息 | 是 | 四类表单切换、字段校验、POST 提交、未登录守卫 |
 | 用户中心 | 是 | 展示用户资料、收藏列表、我的发布，未登录时提示登录 |
-| 收藏功能 | 是 | 添加/取消/视觉反馈（蓝色 active 状态） |
-| 状态反馈 | 是 | LoadingState（CSS Spinner）、EmptyState（自定义文案）、ErrorState（红色卡片+重试按钮） |
-| 搜索筛选 | 是 | SearchBar 组件，基于 computed 实时客户端过滤 |
-| README | 是 | 包含项目简介、技术栈、核心功能、页面路由、目录说明、运行方式、每日开发记录、AI 协作说明 |
-| 证据卡 | 是 | Day1—Day7 共 7 张，每张包含真实开发记录、问题记录、AI 协作记录、个人反思 |
-| AI 协作卡 | 是 | docs/ai/AI_Collaboration_Card.md，含 6 个章节：工具、参与任务、典型提示词、问题总结、判断标准、总结 |
-| 检测报告 | 是 | CHECK_REPORT.md，覆盖 12 个检查维度 |
+| 状态反馈 | 是 | 包含 LoadingState（加载）、EmptyState（空状态）、ErrorState（错误+重试） |
+| README | 是 | 说明项目功能、技术栈、运行方式、目录结构、开发记录和 AI 协作 |
+| 证据卡 | 是 | Day1—Day7 共 7 张，每张包含开发记录、问题、AI 协作和反思 |
 
 ## 3. 构建与检测记录
 
+执行以下命令并记录结果：
+
 ```bash
+# 安装依赖 — 成功
+pnpm install
+# Already up to date, Done in 351ms
+
 # 代码检查 — 通过
 pnpm lint
-# oxlint: 0 warnings, 0 errors
-# eslint: 通过
+# oxlint: 0 warnings, 0 errors. eslint: 通过
 
 # 类型检查 — 通过
 pnpm type-check
-# vue-tsc: 构建通过
+# vue-tsc 构建通过
 
-# 构建项目 — 成功
+# 项目构建 — 成功
 pnpm build
-# 143 modules, 166 KB JS + 9 KB CSS, 344ms
+# 143 modules, 166 KB JS + 9 KB CSS, 构建用时 457ms
 
 # 自动检测 — Day3 脚本 20/20 全部通过
 pnpm check -- --day=3
-
-# 最终检测报告 — 12 维度全覆盖
-pnpm build  # 最后一次验证通过
 ```
 
-所有检测命令均执行成功，项目可稳定构建运行。
+所有检测命令均执行成功，项目可稳定构建运行，无错误和警告。
 
 ---
 
